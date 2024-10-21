@@ -1,14 +1,20 @@
 const pool = require('../config/db'); // Importar el pool de conexiones
 
-// Obtener todos los productos
+// Obtener todos los productos con la descripción del rubro
 const getAllProductos = async (req, res) => {
     try {
-        const [results] = await pool.query('SELECT * FROM Producto');
+        // Hacer un JOIN entre Producto y Rubro para obtener la descripción correcta del rubro
+        const [results] = await pool.query(`
+            SELECT p.*, r.DescripcionRub AS DescripcionRub 
+            FROM Producto p 
+            INNER JOIN Rubro r ON p.Rubro = r.idRubroCod
+        `);
         res.json(results);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Crear un nuevo producto
 const addProducto = async (req, res) => {
