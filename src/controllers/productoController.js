@@ -3,17 +3,29 @@ const pool = require('../config/db'); // Importar el pool de conexiones
 // Obtener todos los productos con la descripción del rubro
 const getAllProductos = async (req, res) => {
     try {
-        // Hacer un JOIN entre Producto y Rubro para obtener la descripción correcta del rubro
+        const { sortField, sortOrder } = req.query;
+
+        // Validar el campo de orden y el tipo de orden
+        const validSortFields = ['Precio', 'Descripcion'];
+        const validSortOrders = ['ASC', 'DESC'];
+
+        const field = validSortFields.includes(sortField) ? sortField : 'Precio'; // Valor por defecto 'Precio'
+        const order = validSortOrders.includes(sortOrder) ? sortOrder : 'ASC'; // Valor por defecto 'ASC'
+
+        // Hacer un JOIN entre Producto y Rubro para obtener la descripción correcta del rubro, aplicando el orden
         const [results] = await pool.query(`
             SELECT p.*, r.DescripcionRub AS DescripcionRub 
             FROM Producto p 
             INNER JOIN Rubro r ON p.Rubro = r.idRubroCod
+            ORDER BY p.${field} ${order}
         `);
+        
         res.json(results);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 // Crear un nuevo producto
