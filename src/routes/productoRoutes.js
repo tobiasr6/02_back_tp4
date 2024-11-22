@@ -1,19 +1,7 @@
 const express = require('express');
-// const {
-//     getAllProductos,
-//     addProducto,
-//     getProductoById,
-//     editProducto,
-//     deleteProducto,
-// } = require('../controllers/productoController');
+// const {getAllProductos,addProducto,getProductoById,editProducto,deleteProducto,} = require('../controllers/productoController');
 
-const {
-    getAllProductos,
-    addProducto,
-    getProductoById,
-    editProducto,
-    deleteProducto,
-} = require('../controllers/productoController2');
+const {getAllProductos,addProducto,getProductoById,editProducto,deleteProducto,} = require('../controllers/productoController2');
 
 const router = express.Router();
 
